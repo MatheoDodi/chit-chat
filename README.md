@@ -33,6 +33,7 @@ Building a Chat web application which looks a lot like slack. Like, a lot. Okay,
 ### Built With
 
 - [React](https://reactjs.org/)
+- [Router](https://reacttraining.com/react-router/)
 - [Redux](https://redux.js.org/)
 - [Firebase](https://firebase.google.com/docs/)
 
