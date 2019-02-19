@@ -36,6 +36,7 @@ Building a Chat web application which looks a lot like slack. Like, a lot. Okay,
 - [Router](https://reacttraining.com/react-router/)
 - [Redux](https://redux.js.org/)
 - [Firebase](https://firebase.google.com/docs/)
+- [Semantic-Ui-React](https://react.semantic-ui.com/)
 
 <!-- GETTING STARTED -->
 
@@ -48,7 +49,7 @@ To get a local copy up and running follow these simple steps.
 1. Clone the repo
 
 ```sh
-git clone https://github.com/MatthewDodi/react-testing.git
+git clone https://github.com/MatthewDodi/chit-chat.git
 ```
 
 2. Install NPM packages
@@ -77,7 +78,7 @@ Contributions are what make the open source community such an amazing place to b
 
 ## What Did I Learn
 
-- TBD
+- Semantic Ui React
 
 <!-- CONTACT -->
 
@@ -85,7 +86,7 @@ Contributions are what make the open source community such an amazing place to b
 
 Matthew Dodi - [in/MatthewDodi](https://linkedin.com/in/MatthewDodi) - matthew.dodi@gmail.com
 
-Project Link: [https://github.com/MatthewDodi/chitChat.git](https://github.com/MatthewDodi/chitChat.git)
+Project Link: [https://github.com/MatthewDodi/chit-chat.git](https://github.com/MatthewDodi/chit-chat.git)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
