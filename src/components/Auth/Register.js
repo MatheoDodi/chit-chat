@@ -17,7 +17,8 @@ class Register extends Component {
     email: '',
     password: '',
     passwordConfirmation: '',
-    errors: []
+    errors: [],
+    loading: false
   };
 
   handleChange = event => {
@@ -69,15 +70,21 @@ class Register extends Component {
     errors.map((error, i) => <p key={i}>{error.message}</p>);
 
   handleSubmit = event => {
+    event.preventDefault();
     if (this.isFormValid()) {
-      event.preventDefault();
+      this.setState({ errors: [], loading: true });
       firebase
         .auth()
         .createUserWithEmailAndPassword(this.state.email, this.state.password)
         .then(createdUser => {
           console.log(createdUser);
+          this.setState({ loading: false });
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          console.log(err);
+          const { errors } = this.state;
+          this.setState({ loading: false, errors: errors.concat(err) });
+        });
     }
   };
 
