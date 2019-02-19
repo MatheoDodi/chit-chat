@@ -16,12 +16,57 @@ class Register extends Component {
     username: '',
     email: '',
     password: '',
-    passwordConfirmation: ''
+    passwordConfirmation: '',
+    errors: []
   };
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
+
+  isFormValid = () => {
+    let errors = [];
+    let error;
+
+    if (this.isFormEmpty(this.state)) {
+      //throw error
+      error = { message: 'Please fill in all fields' };
+
+      this.setState({ errors: errors.concat(error) });
+      return false;
+    } else if (!this.isPasswordValid(this.state)) {
+      //throw error
+      error = { message: 'Password is invalid' };
+      errors.concat(error);
+      this.setState({ errors: errors.concat(error) });
+      return false;
+    } else {
+      //form valid
+      return true;
+    }
+  };
+
+  isFormEmpty = ({ username, email, password, passwordConfirmation }) => {
+    return (
+      !username.length ||
+      !email.length ||
+      !password.length ||
+      !passwordConfirmation
+    );
+  };
+
+  isPasswordValid = ({ password, passwordConfirmation }) => {
+    if (password < 6 || passwordConfirmation < 6) {
+      return false;
+    } else if (password !== passwordConfirmation) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  displayErrors = errors =>
+    errors.map((error, i) => <p key={i}>{error.message}</p>);
 
   handleSubmit = event => {
     if (this.isFormValid()) {
@@ -37,7 +82,13 @@ class Register extends Component {
   };
 
   render() {
-    const { username, email, password, passwordConfirmation } = this.state;
+    const {
+      username,
+      email,
+      password,
+      passwordConfirmation,
+      errors
+    } = this.state;
     return (
       <Grid textAlign='center' verticalAlign='middle' className='app'>
         <Grid.Column style={{ maxWidth: 450 }}>
@@ -92,6 +143,12 @@ class Register extends Component {
               </Button>
             </Segment>
           </Form>
+          {errors.length > 0 && (
+            <Message error>
+              <h3>Error</h3>
+              {this.displayErrors(errors)}
+            </Message>
+          )}
           <Message>
             Already a user? <Link to='/login'>Login</Link>
           </Message>
