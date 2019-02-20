@@ -88,13 +88,20 @@ class Register extends Component {
     }
   };
 
+  handleInputError = (errors, inputName) => {
+    return errors.some(error => error.message.toLowerCase().includes(inputName))
+      ? 'error'
+      : '';
+  };
+
   render() {
     const {
       username,
       email,
       password,
       passwordConfirmation,
-      errors
+      errors,
+      loading
     } = this.state;
     return (
       <Grid textAlign='center' verticalAlign='middle' className='app'>
@@ -124,6 +131,7 @@ class Register extends Component {
                 onChange={this.handleChange}
                 value={email}
                 type='text'
+                className={this.handleInputError(errors, 'email')}
               />
               <Form.Input
                 fluid
@@ -134,6 +142,7 @@ class Register extends Component {
                 onChange={this.handleChange}
                 value={password}
                 type='password'
+                className={this.handleInputError(errors, 'password')}
               />
               <Form.Input
                 fluid
@@ -144,8 +153,18 @@ class Register extends Component {
                 onChange={this.handleChange}
                 value={passwordConfirmation}
                 type='password'
+                className={this.handleInputError(
+                  errors,
+                  'passwordConfirmation'
+                )}
               />
-              <Button color='orange' fluid size='large'>
+              <Button
+                disabled={loading}
+                className={loading ? 'loading' : ''}
+                color='orange'
+                fluid
+                size='large'
+              >
                 Submit
               </Button>
             </Segment>
