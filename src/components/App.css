@@ -1,7 +1,8 @@
 html,
 body,
 .app {
+  margin: 0;
   height: 100vh;
   background: #eee;
-  padding: 1rem;
+  padding: 0;
 }

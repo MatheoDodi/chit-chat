@@ -78,7 +78,8 @@ Contributions are what make the open source community such an amazing place to b
 
 ## What Did I Learn
 
-- Semantic Ui React
+- Semantic Ui React component library
+- Firebase Functions
 
 <!-- CONTACT -->
 
