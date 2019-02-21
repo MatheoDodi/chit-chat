@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import { createStore } from 'redux';
+import { Provider, connect } from 'react-redux';
+import { setUser } from './store/actions';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import ReactDOM from 'react-dom';
 import {
   BrowserRouter as Router,
@@ -6,6 +10,7 @@ import {
   Route,
   withRouter
 } from 'react-router-dom';
+import rootReducer from './store/store';
 import 'semantic-ui-css/semantic.min.css';
 import firebase from './firebaseSetup';
 import App from './components/App';
@@ -13,10 +18,14 @@ import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import * as serviceWorker from './serviceWorker';
 
+const store = createStore(rootReducer, composeWithDevTools());
+
 class Root extends Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
+        // console.log(user);
+        this.props.setUser(user);
         this.props.history.push('/');
       }
     });
@@ -33,12 +42,19 @@ class Root extends Component {
   }
 }
 
-const RootWithRouter = withRouter(Root);
+const RootWithAuth = withRouter(
+  connect(
+    null,
+    { setUser }
+  )(Root)
+);
 
 ReactDOM.render(
-  <Router>
-    <RootWithRouter />
-  </Router>,
+  <Provider store={store}>
+    <Router>
+      <RootWithAuth />
+    </Router>
+  </Provider>,
   document.getElementById('root')
 );
 
