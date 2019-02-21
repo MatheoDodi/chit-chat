@@ -36,7 +36,7 @@ Building a Chat web application which looks a lot like slack. Like, a lot. Okay,
 - [Router](https://reacttraining.com/react-router/)
 - [Redux](https://redux.js.org/)
 - [Firebase](https://firebase.google.com/docs/)
-- [Semantic-Ui-React](https://react.semantic-ui.com/)
+- [Semantic-UI-React](https://react.semantic-ui.com/)
 
 <!-- GETTING STARTED -->
 
@@ -78,8 +78,9 @@ Contributions are what make the open source community such an amazing place to b
 
 ## What Did I Learn
 
-- Semantic Ui React component library
+- Semantic UI React component library
 - Firebase Functions
+- Destructuring mapStateToProps properties inside the react-redux 'connect' method intead of setting up an external variable
 
 <!-- CONTACT -->
 
