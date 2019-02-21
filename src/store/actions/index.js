@@ -6,3 +6,7 @@ export const setUser = user => ({
     currentUser: user
   }
 });
+
+export const clearUser = () => ({
+  type: actionTypes.CLEAR_USER
+});
