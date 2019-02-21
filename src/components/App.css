@@ -1,8 +1,11 @@
 html,
-body,
-.app {
+body {
   margin: 0;
   height: 100vh;
   background: #eee;
   padding: 0;
+}
+
+#root {
+  padding-top: 19px;
 }
