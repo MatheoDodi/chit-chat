@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
 import { userReducer } from './reducers/userReducer';
+import { channelReducer } from './reducers/channelReducer';
 
 const rootReducer = combineReducers({
-  user: userReducer
+  user: userReducer,
+  channel: channelReducer
 });
 
 export default rootReducer;
