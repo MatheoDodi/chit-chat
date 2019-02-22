@@ -7,6 +7,7 @@ import firebase from '../../firebaseSetup';
 class Channels extends Component {
   state = {
     user: this.props.currentUser,
+    activeChannel: null,
     channels: [],
     showModal: false,
     channelName: '',
@@ -19,11 +20,15 @@ class Channels extends Component {
     this.addListeners();
   }
 
+  componentWillUnmount() {
+    this.removeListeners();
+  }
+
   setFirstChannel = () => {
     const { channels, firstLoad } = this.state;
     if (firstLoad) {
       const firstChannel = channels[0];
-      this.props.setCurrentChannel(firstChannel);
+      this.changeChannel(firstChannel);
       this.setState({ firstLoad: false });
     }
   };
@@ -34,6 +39,10 @@ class Channels extends Component {
       loadedChannels.push(snap.val());
       this.setState({ channels: loadedChannels }, () => this.setFirstChannel());
     });
+  };
+
+  removeListeners = () => {
+    this.state.channelsRef.off();
   };
 
   addChannel = () => {
@@ -73,7 +82,12 @@ class Channels extends Component {
   };
 
   changeChannel = channel => {
+    this.setActiveChannel(channel);
     this.props.setCurrentChannel(channel);
+  };
+
+  setActiveChannel = channel => {
+    this.setState({ activeChannel: channel });
   };
 
   displayChannels = channels => {
@@ -84,6 +98,10 @@ class Channels extends Component {
           key={channel.id}
           onClick={() => this.changeChannel(channel)}
           name={channel.name}
+          active={
+            this.state.activeChannel &&
+            channel.id === this.state.activeChannel.id
+          }
           style={{ opacity: 0.7 }}
         >
           # {channel.name}
