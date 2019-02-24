@@ -8,4 +8,22 @@ body {
 
 #root {
   padding-top: 19px;
+  height: 100%;
+}
+
+#messages-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.messages {
+  flex-grow: 1;
+  overflow-y: scroll;
+}
+
+.message__form {
+  bottom: 1em;
+  margin-left: 320px;
+  z-index: 200;
 }

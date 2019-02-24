@@ -8,10 +8,14 @@ import Messages from './Messages/Messages';
 import MetaPanel from './MetaPanel/MetaPanel';
 
 const App = ({ currentUser }) => (
-  <Grid columns='equal' className='app' style={{ background: '#eee' }}>
+  <Grid
+    columns='equal'
+    className='app'
+    style={{ background: '#eee', height: '100%' }}
+  >
     <ColorPanel />
     <SidePanel currentUser={currentUser} />
-    <Grid.Column style={{ marginLeft: 320 }}>
+    <Grid.Column id='messages-container' style={{ marginLeft: 320 }}>
       <Messages />
     </Grid.Column>
 
