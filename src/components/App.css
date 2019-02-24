@@ -41,3 +41,8 @@ body {
   position: absolute;
   bottom: 0;
 }
+
+.icon__add-channel:hover {
+  color: white;
+  cursor: pointer;
+}
