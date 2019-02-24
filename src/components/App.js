@@ -16,7 +16,11 @@ const App = ({ currentUser, currentChannel }) => (
     <ColorPanel />
     <SidePanel currentUser={currentUser} />
     <Grid.Column id='messages-container' style={{ marginLeft: 320 }}>
-      <Messages currentUser={currentUser} currentChannel={currentChannel} />
+      {currentChannel ? (
+        <Messages currentUser={currentUser} currentChannel={currentChannel} />
+      ) : (
+        'Loading'
+      )}
     </Grid.Column>
 
     <Grid.Column width={4}>
