@@ -36,3 +36,8 @@ body {
 .message__image {
   padding: 1em;
 }
+
+.scroll {
+  position: absolute;
+  bottom: 0;
+}
