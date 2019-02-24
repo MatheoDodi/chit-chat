@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Loader } from 'semantic-ui-react';
 import './App.css';
 import ColorPanel from './ColorPanel/ColorPanel';
 import SidePanel from './SidePanel/SidePanel';
@@ -19,7 +19,7 @@ const App = ({ currentUser, currentChannel }) => (
       {currentChannel ? (
         <Messages currentUser={currentUser} currentChannel={currentChannel} />
       ) : (
-        'Loading'
+        <Loader active />
       )}
     </Grid.Column>
 
