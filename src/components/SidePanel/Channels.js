@@ -121,7 +121,7 @@ class Channels extends Component {
     const { channels, showModal } = this.state;
     return (
       <Fragment>
-        <Menu.Menu style={{ paddingBottom: '2em', paddingTop: '1em' }}>
+        <Menu.Menu className='menu'>
           <Menu.Item>
             <span>
               <Icon name='exchange' /> Channels
