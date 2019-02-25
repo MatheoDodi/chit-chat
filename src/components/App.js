@@ -14,13 +14,14 @@ const App = ({ currentUser, currentChannel, isPrivateChannel }) => (
     style={{ background: '#eee', height: '100%' }}
   >
     <ColorPanel />
-    <SidePanel currentUser={currentUser} />
+    <SidePanel currentUser={currentUser} key={2} />
     <Grid.Column id='messages-container' style={{ marginLeft: 320 }}>
       {currentChannel ? (
         <Messages
           currentUser={currentUser}
           currentChannel={currentChannel}
           isPrivateChannel={isPrivateChannel}
+          key={1}
         />
       ) : (
         <Loader active />

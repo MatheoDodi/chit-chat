@@ -8,7 +8,6 @@ import Message from './Message';
 class Messages extends Component {
   state = {
     messagesRef: firebase.database().ref('messages'),
-    privateMessagesRef: firebase.database().ref('privateMessages'),
     messages: [],
     messagesLoading: true,
     numUniqueUsers: '',
@@ -61,11 +60,9 @@ class Messages extends Component {
   };
 
   getMessagesRef = () => {
-    const { messagesRef, privateMessagesRef } = this.state;
-    const { isPrivateChannel } = this.props;
-    console.log(isPrivateChannel);
+    const { messagesRef } = this.state;
 
-    return isPrivateChannel ? privateMessagesRef : messagesRef;
+    return messagesRef;
   };
 
   handleSearchChange = event => {
