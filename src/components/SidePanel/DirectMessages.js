@@ -16,7 +16,7 @@ class DirectMessages extends Component {
     }
   }
 
-  addListenrs = currentUserUid => {
+  addListeners = currentUserUid => {
     let loadedUsers = [];
     this.state.usersRef.on('child_added', snap => {
       if (currentUserUid !== snap.key) {
@@ -30,7 +30,7 @@ class DirectMessages extends Component {
 
     this.state.connectedRef.on('value', snap => {
       if (snap.val() === true) {
-        this.state.presenceRef.child(currentUserUid);
+        const ref = this.state.presenceRef.child(currentUserUid);
         ref.set(true);
         ref.onDisconnect().remove(err => {
           if (err !== null) {
@@ -43,9 +43,30 @@ class DirectMessages extends Component {
     this.state.presenceRef.on('child_added', snap => {
       if (currentUserUid !== snap.key) {
         // add status to user
+        this.addStatusToUser(snap.key);
+      }
+    });
+
+    this.state.presenceRef.on('child_removed', snap => {
+      if (currentUserUid !== snap.key) {
+        // add status to user
+        this.addStatusToUser(snap.key, false);
       }
     });
   };
+
+  addStatusToUser = (userId, connected = true) => {
+    const updatedUsers = this.state.users.reduce((acc, user) => {
+      if (userId === user.uid) {
+        user['status'] = `${connected ? 'online' : 'offline'}`;
+      }
+
+      return acc.concat(user);
+    }, []);
+    this.setState({ users: updatedUsers });
+  };
+
+  isUserOnline = user => user.status === 'online';
 
   render() {
     const { users } = this.state;
@@ -58,6 +79,19 @@ class DirectMessages extends Component {
           </span>{' '}
           ({users.length})
         </Menu.Item>
+        {users.map(user => (
+          <Menu.Item
+            key={user.uid}
+            onClick={() => console.log(user)}
+            style={{ opacity: 0.7, fontStyle: 'italic' }}
+          >
+            <Icon
+              name='circle'
+              color={this.isUserOnline(user) ? 'green' : 'red'}
+            />
+            @ {user.name}
+          </Menu.Item>
+        ))}
       </Menu.Menu>
     );
   }
