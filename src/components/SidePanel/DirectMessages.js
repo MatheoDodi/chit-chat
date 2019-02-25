@@ -76,9 +76,8 @@ class DirectMessages extends Component {
       id: channelId,
       name: user.name
     };
-
-    this.props.setPrivateChannel(true);
     this.props.setCurrentChannel(channelData);
+    this.props.setPrivateChannel(true);
   };
 
   getChannelId = userId => {

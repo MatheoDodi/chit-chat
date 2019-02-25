@@ -83,8 +83,8 @@ class Channels extends Component {
 
   changeChannel = channel => {
     this.setActiveChannel(channel);
-    this.props.setPrivateChannel(false);
     this.props.setCurrentChannel(channel);
+    this.props.setPrivateChannel(false);
   };
 
   setActiveChannel = channel => {

@@ -25,7 +25,6 @@ class Messages extends Component {
 
   componentDidMount() {
     const { currentChannel, currentUser } = this.props;
-    console.log(this.messagesEnd);
 
     if (currentChannel && currentUser) {
       this.addListeners(currentChannel.id);
@@ -45,6 +44,7 @@ class Messages extends Component {
   addMessageListener = channelId => {
     let loadedMessages = [];
     const ref = this.getMessagesRef();
+    console.log(ref);
     ref.child(channelId).on('child_added', snap => {
       loadedMessages.push(snap.val());
       this.setState({
@@ -63,7 +63,7 @@ class Messages extends Component {
   getMessagesRef = () => {
     const { messagesRef, privateMessagesRef } = this.state;
     const { isPrivateChannel } = this.props;
-    console.log('im in');
+    console.log(isPrivateChannel);
 
     return isPrivateChannel ? privateMessagesRef : messagesRef;
   };
