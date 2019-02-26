@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import firebase from '../../firebaseSetup';
 import md5 from 'md5';
-import { Link } from 'react-router-dom';
 import {
   Grid,
   Form,
@@ -11,8 +10,9 @@ import {
   Message,
   Icon
 } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
-class Register extends Component {
+class Register extends React.Component {
   state = {
     username: '',
     email: '',
@@ -23,28 +23,22 @@ class Register extends Component {
     usersRef: firebase.database().ref('users')
   };
 
-  handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
-
   isFormValid = () => {
     let errors = [];
     let error;
 
     if (this.isFormEmpty(this.state)) {
       //throw error
-      error = { message: 'Please fill in all fields' };
-
+      error = { message: 'Fill in all fields' };
       this.setState({ errors: errors.concat(error) });
       return false;
     } else if (!this.isPasswordValid(this.state)) {
-      //throw error
+      // throw error
       error = { message: 'Password is invalid' };
-      errors.concat(error);
       this.setState({ errors: errors.concat(error) });
       return false;
     } else {
-      //form valid
+      // form valid
       return true;
     }
   };
@@ -54,12 +48,12 @@ class Register extends Component {
       !username.length ||
       !email.length ||
       !password.length ||
-      !passwordConfirmation
+      !passwordConfirmation.length
     );
   };
 
   isPasswordValid = ({ password, passwordConfirmation }) => {
-    if (password < 6 || passwordConfirmation < 6) {
+    if (password.length < 6 || passwordConfirmation < 6) {
       return false;
     } else if (password !== passwordConfirmation) {
       return false;
@@ -70,6 +64,16 @@ class Register extends Component {
 
   displayErrors = errors =>
     errors.map((error, i) => <p key={i}>{error.message}</p>);
+
+  handleInputError = (errors, inputName) => {
+    return errors.some(error => error.message.toLowerCase().includes(inputName))
+      ? 'error'
+      : '';
+  };
+
+  handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
 
   handleSubmit = event => {
     event.preventDefault();
@@ -88,18 +92,24 @@ class Register extends Component {
               )}?d=identicon`
             })
             .then(() => {
-              this.saveUser(createdUser).then(() => console.log('user saved'));
-              this.setState({ loading: false });
+              this.saveUser(createdUser).then(() => {
+                console.log('user saved');
+              });
             })
             .catch(err => {
-              const { errors } = this.state;
-              this.setState({ loading: false, errors: errors.concat(err) });
+              console.error(err);
+              this.setState({
+                errors: this.state.errors.concat(err),
+                loading: false
+              });
             });
         })
         .catch(err => {
-          console.log(err);
-          const { errors } = this.state;
-          this.setState({ loading: false, errors: errors.concat(err) });
+          console.error(err);
+          this.setState({
+            errors: this.state.errors.concat(err),
+            loading: false
+          });
         });
     }
   };
@@ -109,12 +119,6 @@ class Register extends Component {
       name: createdUser.user.displayName,
       avatar: createdUser.user.photoURL
     });
-  };
-
-  handleInputError = (errors, inputName) => {
-    return errors.some(error => error.message.toLowerCase().includes(inputName))
-      ? 'error'
-      : '';
   };
 
   render() {
@@ -127,66 +131,63 @@ class Register extends Component {
       loading
     } = this.state;
     return (
-      <Grid textAlign='center' verticalAlign='middle' className='app'>
+      <Grid textAlign="center" verticalAlign="middle" className="app">
         <Grid.Column style={{ maxWidth: 450 }}>
-          <Header as='h1' icon color='orange' textAlign='center'>
-            <Icon name='puzzle piece' color='orange' />
+          <Header as="h1" icon color="orange" textAlign="center">
+            <Icon name="chat" color="orange" />
             Register for chitChat
           </Header>
-          <Form size='large' onSubmit={this.handleSubmit}>
+          <Form onSubmit={this.handleSubmit} size="large">
             <Segment stacked>
               <Form.Input
                 fluid
-                name='username'
-                icon='user'
-                iconPosition='left'
-                placeholder='Username'
+                name="username"
+                icon="user"
+                iconPosition="left"
+                placeholder="Username"
                 onChange={this.handleChange}
+                type="text"
                 value={username}
-                type='text'
               />
               <Form.Input
                 fluid
-                name='email'
-                icon='mail'
-                iconPosition='left'
-                placeholder='Email Address'
+                name="email"
+                icon="mail"
+                iconPosition="left"
+                placeholder="Email Address"
                 onChange={this.handleChange}
+                type="email"
                 value={email}
-                type='text'
                 className={this.handleInputError(errors, 'email')}
               />
               <Form.Input
                 fluid
-                name='password'
-                icon='lock'
-                iconPosition='left'
-                placeholder='Password'
+                name="password"
+                icon="lock"
+                iconPosition="left"
+                placeholder="Password"
                 onChange={this.handleChange}
+                type="password"
                 value={password}
-                type='password'
                 className={this.handleInputError(errors, 'password')}
               />
               <Form.Input
                 fluid
-                name='passwordConfirmation'
-                icon='repeat'
-                iconPosition='left'
-                placeholder='Password Confirmation'
+                name="passwordConfirmation"
+                icon="repeat"
+                iconPosition="left"
+                placeholder="Password Confirmation"
                 onChange={this.handleChange}
+                type="password"
                 value={passwordConfirmation}
-                type='password'
-                className={this.handleInputError(
-                  errors,
-                  'passwordConfirmation'
-                )}
+                className={this.handleInputError(errors, 'password')}
               />
               <Button
                 disabled={loading}
                 className={loading ? 'loading' : ''}
-                color='orange'
+                color="orange"
                 fluid
-                size='large'
+                size="large"
               >
                 Submit
               </Button>
@@ -199,10 +200,7 @@ class Register extends Component {
             </Message>
           )}
           <Message>
-            Already a user?{' '}
-            <Link style={{ color: '#f2711c' }} to='/login'>
-              Login
-            </Link>
+            Already a user? <Link to="/login">Login</Link>
           </Message>
         </Grid.Column>
       </Grid>

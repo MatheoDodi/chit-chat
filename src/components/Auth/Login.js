@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import firebase from '../../firebaseSetup';
-import md5 from 'md5';
-import { Link } from 'react-router-dom';
+
 import {
   Grid,
   Form,
@@ -11,8 +10,9 @@ import {
   Message,
   Icon
 } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
-class Login extends Component {
+class Login extends React.Component {
   state = {
     email: '',
     password: '',
@@ -20,20 +20,18 @@ class Login extends Component {
     loading: false
   };
 
+  displayErrors = errors =>
+    errors.map((error, i) => <p key={i}>{error.message}</p>);
+
+  handleInputError = (errors, inputName) => {
+    return errors.some(error => error.message.toLowerCase().includes(inputName))
+      ? 'error'
+      : '';
+  };
+
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
-
-  isFormEmpty = ({ email, password }) => {
-    return email || password;
-  };
-
-  isPasswordValid = password => {
-    return !(password < 6);
-  };
-
-  displayErrors = errors =>
-    errors.map((error, i) => <p key={i}>{error.message}</p>);
 
   handleSubmit = event => {
     event.preventDefault();
@@ -44,10 +42,9 @@ class Login extends Component {
         .signInWithEmailAndPassword(this.state.email, this.state.password)
         .then(signedInUser => {
           console.log(signedInUser);
-          this.setState({ loading: false });
         })
         .catch(err => {
-          console.log(err);
+          console.error(err);
           this.setState({
             errors: this.state.errors.concat(err),
             loading: false
@@ -56,69 +53,48 @@ class Login extends Component {
     }
   };
 
-  isFormValid = ({ email, password }) => {
-    let errors = [];
-    let error;
-    console.log(email, password);
-    console.log(this.isFormEmpty(email, password));
-    if (this.isFormEmpty(email, password)) {
-      error = { message: 'Please fill in all fields.' };
-      this.setState({ errors: errors.concat(error) });
-      return false;
-    } else if (!this.isPasswordValid(password)) {
-      error = { message: 'Password not long enough.' };
-      this.setState({ errors: errors.concat(error) });
-      return false;
-    } else {
-      return true;
-    }
-  };
-
-  handleInputError = (errors, inputName) => {
-    return errors.some(error => error.message.toLowerCase().includes(inputName))
-      ? 'error'
-      : '';
-  };
+  isFormValid = ({ email, password }) => email && password;
 
   render() {
     const { email, password, errors, loading } = this.state;
     return (
-      <Grid textAlign='center' verticalAlign='middle' className='app'>
+      <Grid textAlign="center" verticalAlign="middle" className="app">
         <Grid.Column style={{ maxWidth: 450 }}>
-          <Header as='h1' icon color='violet' textAlign='center'>
-            <Icon name='code branch' color='violet' />
+          <Header as="h1" icon color="violet" textAlign="center">
+            <Icon name="chat" color="violet" />
             Login to chitChat
           </Header>
-          <Form size='large' onSubmit={this.handleSubmit}>
+          <Form onSubmit={this.handleSubmit} size="large">
             <Segment stacked>
               <Form.Input
                 fluid
-                name='email'
-                icon='mail'
-                iconPosition='left'
-                placeholder='Email Address'
+                name="email"
+                icon="mail"
+                iconPosition="left"
+                placeholder="Email Address"
                 onChange={this.handleChange}
+                type="email"
                 value={email}
-                type='text'
                 className={this.handleInputError(errors, 'email')}
               />
               <Form.Input
                 fluid
-                name='password'
-                icon='lock'
-                iconPosition='left'
-                placeholder='Password'
+                name="password"
+                icon="lock"
+                iconPosition="left"
+                placeholder="Password"
                 onChange={this.handleChange}
+                type="password"
                 value={password}
-                type='password'
                 className={this.handleInputError(errors, 'password')}
               />
+
               <Button
                 disabled={loading}
                 className={loading ? 'loading' : ''}
-                color='violet'
+                color="violet"
                 fluid
-                size='large'
+                size="large"
               >
                 Submit
               </Button>
@@ -131,10 +107,7 @@ class Login extends Component {
             </Message>
           )}
           <Message>
-            Don't have an account?{' '}
-            <Link style={{ color: '#6435c9' }} to='/register'>
-              Register
-            </Link>
+            Don't have an account? <Link to="/register">Register </Link>
           </Message>
         </Grid.Column>
       </Grid>
