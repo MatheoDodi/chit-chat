@@ -17,6 +17,12 @@ body {
   flex-direction: column;
 }
 
+.auth-container__center {
+  height: 90%;
+  display: flex;
+  justify-content: center;
+}
+
 .messages {
   flex-grow: 1;
   overflow-y: scroll;
