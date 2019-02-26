@@ -222,7 +222,6 @@ class Channels extends Component {
           </Menu.Item>
           {this.displayChannels(channels)}
         </Menu.Menu>
-        {/* Add channel modal */}
         <Modal basic open={modal} onClose={this.closeModal}>
           <Modal.Header>Add a channel</Modal.Header>
           <Modal.Content>
