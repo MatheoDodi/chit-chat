@@ -14,6 +14,7 @@ class Messages extends Component {
     messages: [],
     messagesLoading: true,
     channel: this.props.currentChannel,
+    isChannelStarred: false,
     user: this.props.currentUser,
     usersRef: firebase.database().ref('users'),
     progressBar: false,
@@ -91,6 +92,37 @@ class Messages extends Component {
     }, {});
   };
 
+  handleStar = () => {
+    this.setState(
+      prevState => ({ isChannelStarred: !prevState.isChannelStarred }),
+      () => this.starChannel()
+    );
+  };
+
+  starChannel = () => {
+    if (this.state.isChannelStarred) {
+      this.state.usersRef.child(`${this.state.user.uid}/starred`).update({
+        [this.state.channel.id]: {
+          name: this.state.channel.name,
+          details: this.state.channel.details,
+          createdBy: {
+            name: this.state.channel.createdBy.name,
+            avatar: this.state.channel.createdBy.avatar
+          }
+        }
+      });
+    } else {
+      this.state.usersRef
+        .child(`${this.state.user.uid}/starred`)
+        .child(this.state.channel.id)
+        .remove(err => {
+          if (err !== null) {
+            console.log(err);
+          }
+        });
+    }
+  };
+
   handleSearchChange = event => {
     this.setState(
       {
@@ -151,7 +183,7 @@ class Messages extends Component {
       searchResults,
       searchLoading,
       privateChannel,
-      messagesLoading
+      isChannelStarred
     } = this.state;
     return (
       <React.Fragment>
@@ -161,9 +193,11 @@ class Messages extends Component {
           handleSearchChange={this.handleSearchChange}
           searchLoading={searchLoading}
           isPrivateChannel={privateChannel}
+          handleStar={this.handleStar}
+          isChannelStarred={isChannelStarred}
         />
 
-        <Segment className="messages">
+        <Segment className='messages'>
           <Comment.Group
             className={progressBar ? 'messages__progress' : 'messages'}
           >
