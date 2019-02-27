@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { setColors } from '../../store/actions';
 import firebase from '../../firebaseSetup';
 import {
   Sidebar,
@@ -17,7 +19,22 @@ class ColorPanel extends Component {
     modal: false,
     primary: '9900EF',
     secondary: 'FF6900',
-    usersRef: firebase.database().ref('users')
+    usersRef: firebase.database().ref('users'),
+    userColors: []
+  };
+
+  componentDidMount() {
+    if (this.props.currentUser) {
+      this.addListener(this.props.currentUser.uid);
+    }
+  }
+
+  addListener = userId => {
+    let userColors = [];
+    this.state.usersRef.child(`${userId}/colors`).on('child_added', snap => {
+      userColors.unshift(snap.val());
+      this.setState({ userColors });
+    });
   };
 
   openModal = () => this.setState({ modal: true });
@@ -51,8 +68,34 @@ class ColorPanel extends Component {
       });
   };
 
+  displayUserColors = colors => {
+    console.log(colors);
+    return (
+      colors.length > 0 &&
+      colors.map((color, i) => (
+        <React.Fragment key={i}>
+          <Divider />
+          <div
+            className='color__container'
+            onClick={() => this.props.setColors(color.primary, color.secondary)}
+          >
+            <div
+              className='color__square'
+              style={{ background: color.primary }}
+            >
+              <div
+                className='color__overlay'
+                style={{ background: color.secondary }}
+              />
+            </div>
+          </div>
+        </React.Fragment>
+      ))
+    );
+  };
+
   render() {
-    const { modal, primary, secondary } = this.state;
+    const { modal, primary, secondary, userColors } = this.state;
 
     return (
       <Sidebar
@@ -65,6 +108,7 @@ class ColorPanel extends Component {
       >
         <Divider />
         <Button icon='add' size='small' color='blue' onClick={this.openModal} />
+        {this.displayUserColors(userColors)}
 
         <Modal
           size='tiny'
@@ -108,4 +152,7 @@ class ColorPanel extends Component {
   }
 }
 
-export default ColorPanel;
+export default connect(
+  null,
+  { setColors }
+)(ColorPanel);
