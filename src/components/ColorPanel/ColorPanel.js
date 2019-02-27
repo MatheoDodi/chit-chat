@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import firebase from '../../firebaseSetup';
 import {
   Sidebar,
   Menu,
@@ -6,21 +7,52 @@ import {
   Button,
   Modal,
   Label,
-  Icon
+  Icon,
+  Segment
 } from 'semantic-ui-react';
 import { TwitterPicker } from 'react-color';
 
 class ColorPanel extends Component {
-  state = { modal: false };
+  state = {
+    modal: false,
+    primary: '9900EF',
+    secondary: 'FF6900',
+    usersRef: firebase.database().ref('users')
+  };
 
   openModal = () => this.setState({ modal: true });
 
   closeModal = () => this.setState({ modal: false });
 
-  handleColor = e => console.log(e.target.name);
+  handleChangePrimary = color => this.setState({ primary: color.hex });
+
+  handleChangeSecondary = color => this.setState({ secondary: color.hex });
+
+  handleSaveColors = () => {
+    if (this.state.primary && this.state.secondary) {
+      this.saveColors(this.state.primary, this.state.secondary);
+    }
+  };
+
+  saveColors = (primary, secondary) => {
+    this.state.usersRef
+      .child(`${this.props.currentUser.uid}/colors`)
+      .push()
+      .update({
+        primary,
+        secondary
+      })
+      .then(() => {
+        console.log('Colors Added');
+        this.closeModal();
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   render() {
-    const { modal } = this.state;
+    const { modal, primary, secondary } = this.state;
 
     return (
       <Sidebar
@@ -44,20 +76,26 @@ class ColorPanel extends Component {
           <Modal.Header>Choose App Colors</Modal.Header>
 
           <Modal.Content>
-            <Label content='Primary Color' style={{ marginBottom: '1em' }} />
-            <TwitterPicker onChangeComplete={this.handleColor} />
-            <Label
-              id='Secondary Color'
-              content='Secondary Color'
-              style={{ marginBottom: '1em', marginTop: '3em' }}
-            />
-            <TwitterPicker
-              name='Secondary Color'
-              onChangeComplete={this.handleColor}
-            />
+            <Segment inverted>
+              <Label content='Primary Color' style={{ marginBottom: '1em' }} />
+              <TwitterPicker
+                color={primary}
+                onChange={this.handleChangePrimary}
+              />
+            </Segment>
+            <Segment inverted>
+              <Label
+                content='Secondary Color'
+                style={{ marginBottom: '1em' }}
+              />
+              <TwitterPicker
+                color={secondary}
+                onChange={this.handleChangeSecondary}
+              />
+            </Segment>
           </Modal.Content>
           <Modal.Actions>
-            <Button color='green' inverted>
+            <Button color='green' inverted onClick={this.handleSaveColors}>
               <Icon name='checkmark' /> Save Colors
             </Button>
             <Button color='red' inverted onClick={this.closeModal}>

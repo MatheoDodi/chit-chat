@@ -59,7 +59,7 @@ body {
 }
 
 #modal_color-picker {
-  max-width: 310px;
+  max-width: 345px;
 
   flex-direction: column;
 }
