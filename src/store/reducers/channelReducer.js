@@ -2,7 +2,8 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
   currentChannel: null,
-  isPrivateChannel: false
+  isPrivateChannel: false,
+  userPosts: null
 };
 
 export const channelReducer = (state = initialState, action) => {
@@ -16,6 +17,11 @@ export const channelReducer = (state = initialState, action) => {
       return {
         ...state,
         isPrivateChannel: action.payload.isPrivateChannel
+      };
+    case actionTypes.SET_USER_POSTS:
+      return {
+        ...state,
+        userPosts: action.payload.userPosts
       };
     default:
       return state;

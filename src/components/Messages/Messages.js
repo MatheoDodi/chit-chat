@@ -4,6 +4,7 @@ import MessagesHeader from './MessagesHeader';
 import MessageForm from './MessagesForm';
 import Message from './Message';
 import firebase from '../../firebaseSetup';
+import { setUserPosts } from '../../store/actions';
 import { connect } from 'react-redux';
 
 class Messages extends Component {
@@ -105,6 +106,7 @@ class Messages extends Component {
       }
       return acc;
     }, {});
+    this.props.setUserPosts(userPosts);
   };
 
   handleStar = () => {
@@ -238,5 +240,5 @@ class Messages extends Component {
 
 export default connect(
   null,
-  {}
+  { setUserPosts }
 )(Messages);

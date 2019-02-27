@@ -103,12 +103,12 @@ class DirectMessages extends Component {
 
   render() {
     const { users, activeChannel } = this.state;
-    console.log(users);
+
     return (
-      <Menu.Menu className="menu">
+      <Menu.Menu className='menu'>
         <Menu.Item>
           <span>
-            <Icon name="mail" /> DIRECT MESSAGES
+            <Icon name='mail' /> DIRECT MESSAGES
           </span>{' '}
           ({users.length})
         </Menu.Item>
@@ -120,7 +120,7 @@ class DirectMessages extends Component {
             style={{ opacity: 0.7, fontStyle: 'italic' }}
           >
             <Icon
-              name="circle"
+              name='circle'
               color={this.isUserOnline(user) ? 'green' : 'red'}
             />
             @ {user.name}

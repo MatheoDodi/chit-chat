@@ -19,6 +19,7 @@ export const userReducer = (state = initialState, action) => {
         currentUser: null,
         isLoading: false
       };
+
     default:
       return state;
   }
