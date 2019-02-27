@@ -34,7 +34,7 @@ class MetaPanel extends Component {
             <List.Content>
               <List.Header as='a'>{key}</List.Header>
               <List.Description>
-                {val.count} {this.formatCount(val.count)}
+                {val.count} {this.formatCount(val.count)}`
               </List.Description>
             </List.Content>
           </List.Item>

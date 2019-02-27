@@ -109,6 +109,7 @@ class Channels extends Component {
       id: key,
       name: channelName,
       details: channelDetails,
+      isNew: true,
       createdBy: {
         name: user.displayName,
         avatar: user.photoURL
