@@ -57,3 +57,9 @@ body {
   padding-bottom: 2em;
   padding-top: 1em;
 }
+
+#modal_color-picker {
+  max-width: 310px;
+
+  flex-direction: column;
+}
