@@ -22,6 +22,8 @@ class MetaPanel extends Component {
     this.setState({ activeIndex: newIndex });
   };
 
+  formatCount = postsNum => (postsNum > 1 ? 'posts' : 'post');
+
   displayTopPosters = userPosts => {
     return Object.entries(userPosts)
       .sort((a, b) => b[1].count - a[1].count)
@@ -31,7 +33,9 @@ class MetaPanel extends Component {
             <Image avatar src={val.avatar} />
             <List.Content>
               <List.Header as='a'>{key}</List.Header>
-              <List.Description>{val.count} posts</List.Description>
+              <List.Description>
+                {val.count} {this.formatCount(val.count)}
+              </List.Description>
             </List.Content>
           </List.Item>
         );
