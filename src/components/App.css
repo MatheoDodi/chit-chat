@@ -6,13 +6,16 @@ body {
   padding: 0;
 }
 
-#root {
-  padding-top: 19px;
+body {
   height: 100%;
 }
 
+#root {
+  height: 100vh;
+}
+
 #messages-container {
-  height: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
 }
