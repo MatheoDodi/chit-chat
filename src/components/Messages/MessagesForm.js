@@ -8,6 +8,7 @@ import ProgressBar from './../UI/ProgressBar';
 class MessageForm extends Component {
   state = {
     storageRef: firebase.storage().ref(),
+    typingRef: firebase.database().ref('typing'),
     uploadTask: null,
     uploadState: '',
     percentUploaded: 0,
@@ -23,7 +24,26 @@ class MessageForm extends Component {
   closeModal = () => this.setState({ modal: false });
 
   handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState(
+      { [event.target.name]: event.target.value },
+      this.handleKeyDown
+    );
+  };
+
+  handleKeyDown = () => {
+    const { message, typingRef, channel, user } = this.state;
+
+    if (message) {
+      typingRef
+        .child(channel.id)
+        .child(user.uid)
+        .set(user.displayName);
+    } else {
+      typingRef
+        .child(channel.id)
+        .child(user.uid)
+        .remove();
+    }
   };
 
   createMessage = (fileUrl = null) => {
@@ -151,39 +171,40 @@ class MessageForm extends Component {
       percentUploaded
     } = this.state;
     return (
-      <Segment className="message__form">
+      <Segment className='message__form'>
         <Input
           fluid
-          name="message"
+          name='message'
+          // onKeyDown={this.handleKeyDown}
           onChange={this.handleChange}
           value={message}
           ref={node => (this.messageInputRef = node)}
           style={{ marginBottom: '0.7em' }}
           label={<Button icon={'add'} content={null} />}
-          labelPosition="left"
+          labelPosition='left'
           className={
             errors.some(error => error.message.includes('message'))
               ? 'error'
               : ''
           }
-          placeholder="Write your message"
+          placeholder='Write your message'
         />
-        <Button.Group icon widths="2">
+        <Button.Group icon widths='2'>
           <Button
             onClick={this.sendMessage}
             disabled={loading}
-            color="orange"
-            content="Add Reply"
-            labelPosition="left"
-            icon="edit"
+            color='orange'
+            content='Add Reply'
+            labelPosition='left'
+            icon='edit'
           />
           <Button
-            color="teal"
+            color='teal'
             disabled={uploadState === 'uploading'}
             onClick={this.openModal}
-            content="Upload Media"
-            labelPosition="right"
-            icon="cloud upload"
+            content='Upload Media'
+            labelPosition='right'
+            icon='cloud upload'
           />
         </Button.Group>
         <FileModal
