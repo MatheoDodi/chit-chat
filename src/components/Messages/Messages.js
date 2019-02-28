@@ -13,6 +13,7 @@ class Messages extends Component {
     privateChannel: this.props.isPrivateChannel,
     privateMessagesRef: firebase.database().ref('privateMessages'),
     messagesRef: firebase.database().ref('messages'),
+    typingUsers: [],
     messages: [],
     messagesLoading: true,
     channel: this.props.currentChannel,
@@ -24,7 +25,8 @@ class Messages extends Component {
     searchTerm: '',
     searchLoading: false,
     searchResults: [],
-    connectedRef: firebase.database().ref('.info/connected')
+    connectedRef: firebase.database().ref('.info/connected'),
+    typingRef: firebase.database().ref('typing')
   };
 
   componentDidMount() {
@@ -48,6 +50,43 @@ class Messages extends Component {
 
   addListeners = channelId => {
     this.addMessageListener(channelId);
+    this.addTypingListeners(channelId);
+  };
+
+  addTypingListeners = channelId => {
+    let typingUsers = [];
+    this.state.typingRef.child(channelId).on('child_added', snap => {
+      if (snap.key !== this.state.user.uid) {
+        typingUsers = typingUsers.concat({
+          id: snap.key,
+          name: snap.val()
+        });
+        this.setState({ typingUsers });
+      }
+    });
+
+    this.state.typingRef.child(channelId).on('child_removed', snap => {
+      const index = typingUsers.findIndex(user => user.id === snap.key);
+
+      if (index !== -1) {
+        typingUsers = typingUsers.filter(user => user.id !== snap.key);
+        this.setState({ typingUsers });
+      }
+    });
+
+    this.state.connectedRef.on('value', snap => {
+      if (snap.value === true) {
+        this.state.typingRef
+          .child(channelId)
+          .child(this.state.user.uid)
+          .onDisconnect()
+          .remove(err => {
+            if (err !== null) {
+              console.log(err);
+            }
+          });
+      }
+    });
   };
 
   addUserStarsListener = (channelId, userId) => {
@@ -189,6 +228,24 @@ class Messages extends Component {
     }
   };
 
+  displayTypingUsers = users => {
+    if (users.length > 1) {
+      return users.map((user, index) => (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <snap className='user__typing'>
+            {user.name} is typing{users.length - 1 === index ? '' : ','}
+          </snap>
+        </div>
+      ));
+    } else {
+      return users.map(user => (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <snap className='user__typing'>{user.name} is typing</snap>
+        </div>
+      ));
+    }
+  };
+
   render() {
     const {
       messagesRef,
@@ -201,7 +258,8 @@ class Messages extends Component {
       searchResults,
       searchLoading,
       privateChannel,
-      isChannelStarred
+      isChannelStarred,
+      typingUsers
     } = this.state;
     return (
       <React.Fragment>
@@ -224,7 +282,8 @@ class Messages extends Component {
               : this.displayMessages(messages)}
             <div ref={node => (this.messagesEnd = node)} />
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <span className='user__typing'>douglas is typing</span> <Typing />
+              {typingUsers.length > 0 && this.displayTypingUsers(typingUsers)}
+              {typingUsers.length > 0 && <Typing />}
             </div>
           </Comment.Group>
         </Segment>
