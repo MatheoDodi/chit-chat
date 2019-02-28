@@ -23,6 +23,10 @@ body {
   justify-content: center;
 }
 
+.messages-container {
+  margin-left: 350px;
+}
+
 .messages {
   flex-grow: 1;
   overflow-y: scroll;
@@ -58,17 +62,15 @@ body {
   padding-top: 1em;
 }
 
-#modal_color-picker {
-  max-width: 345px;
-
-  flex-direction: column;
-}
-
 .color__container {
   position: relative;
   overflow: hidden;
   width: 35px;
   border-radius: 3px;
+}
+
+.color__container:hover {
+  cursor: pointer;
 }
 
 .color__square {

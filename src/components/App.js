@@ -33,7 +33,7 @@ const App = ({
     ) : (
       'Loading'
     )}
-    <Grid.Column style={{ marginLeft: 320 }} id='messages-container'>
+    <Grid.Column style={{ marginLeft: 350 }} id='messages-container'>
       <Messages
         key={currentChannel && currentChannel.id}
         currentChannel={currentChannel}

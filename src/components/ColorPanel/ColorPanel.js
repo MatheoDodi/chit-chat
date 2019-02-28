@@ -12,7 +12,7 @@ import {
   Icon,
   Segment
 } from 'semantic-ui-react';
-import { TwitterPicker } from 'react-color';
+import { SwatchesPicker } from 'react-color';
 
 class ColorPanel extends Component {
   state = {
@@ -60,7 +60,7 @@ class ColorPanel extends Component {
         secondary
       })
       .then(() => {
-        console.log('Colors Added');
+        this.props.setColors(primary, secondary);
         this.closeModal();
       })
       .catch(err => {
@@ -122,7 +122,7 @@ class ColorPanel extends Component {
           <Modal.Content>
             <Segment inverted>
               <Label content='Primary Color' style={{ marginBottom: '1em' }} />
-              <TwitterPicker
+              <SwatchesPicker
                 color={primary}
                 onChange={this.handleChangePrimary}
               />
@@ -132,7 +132,7 @@ class ColorPanel extends Component {
                 content='Secondary Color'
                 style={{ marginBottom: '1em' }}
               />
-              <TwitterPicker
+              <SwatchesPicker
                 color={secondary}
                 onChange={this.handleChangeSecondary}
               />
