@@ -227,6 +227,7 @@ class MessageForm extends Component {
         <Input
           fluid
           name='message'
+          autoComplete='off'
           onChange={this.handleChange}
           onKeyPress={this.handleKeyPress}
           value={message}

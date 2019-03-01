@@ -289,7 +289,7 @@ class Messages extends Component {
             id='messages-group'
             className={progressBar ? 'messages__progress' : 'messages'}
           >
-            {this.displayMessagesSkeleton(messagesLoading)}
+            {!privateChannel && this.displayMessagesSkeleton(messagesLoading)}
             {searchTerm
               ? this.displayMessages(searchResults)
               : this.displayMessages(messages)}
