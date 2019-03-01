@@ -21,8 +21,7 @@ const App = ({
     style={{
       background: secondaryColor,
       height: '100%',
-      margin: 0,
-      padding: '1.5em'
+      margin: 0
     }}
   >
     <ColorPanel
