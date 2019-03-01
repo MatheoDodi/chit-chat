@@ -29,11 +29,11 @@ class MessageForm extends Component {
   handleChange = event => {
     this.setState(
       { [event.target.name]: event.target.value },
-      this.handleKeyDown
+      this.handleTypingState
     );
   };
 
-  handleKeyDown = () => {
+  handleTypingState = () => {
     const { message, typingRef, channel, user } = this.state;
 
     if (message) {
@@ -66,6 +66,9 @@ class MessageForm extends Component {
     return message;
   };
 
+  handleKeyPress = event =>
+    event.which === 13 && this.state.message ? this.sendMessage() : null;
+
   sendMessage = () => {
     const { getMessagesRef } = this.props;
     const { message, channel } = this.state;
@@ -79,7 +82,7 @@ class MessageForm extends Component {
         .then(() => {
           this.setState(
             { loading: false, message: '', errors: [] },
-            this.handleKeyDown
+            this.handleTypingState
           );
         })
         .catch(err => {
@@ -217,8 +220,8 @@ class MessageForm extends Component {
         <Input
           fluid
           name='message'
-          // onKeyDown={this.handleKeyDown}
           onChange={this.handleChange}
+          onKeyPress={this.handleKeyPress}
           value={message}
           style={{ marginBottom: '0.7em' }}
           ref={inputNode => (this.messageInput = inputNode)}
