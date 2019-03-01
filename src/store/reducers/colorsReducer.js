@@ -1,7 +1,7 @@
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
-  primaryColor: '#5F4B8B',
+  primaryColor: '#3F0F3F',
   secondaryColor: '#eee'
 };
 

@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Segment, Comment } from 'semantic-ui-react';
 import MessagesHeader from './MessagesHeader';
 import MessageForm from './MessagesForm';
 import Message from './Message';
 import Typing from './Typing';
+import Skeleton from './Skeleton';
 import firebase from '../../firebaseSetup';
 import { setUserPosts } from '../../store/actions';
 import { connect } from 'react-redux';
@@ -216,6 +217,15 @@ class Messages extends Component {
       />
     ));
 
+  displayMessagesSkeleton = loading =>
+    loading ? (
+      <Fragment>
+        {[...Array(20)].map((val, i) => (
+          <Skeleton key={i} />
+        ))}
+      </Fragment>
+    ) : null;
+
   displayChannelName = channel => {
     return channel
       ? `${this.state.privateChannel ? '@' : '#'}${channel.name}`
@@ -232,7 +242,7 @@ class Messages extends Component {
     if (users.length > 1) {
       return users.map((user, index) => (
         <div id={user.id} style={{ display: 'flex', alignItems: 'center' }}>
-          <span className="user__typing">
+          <span className='user__typing'>
             {user.name} is typing{users.length - 1 === index ? '' : ','}
           </span>
         </div>
@@ -240,7 +250,7 @@ class Messages extends Component {
     } else {
       return users.map(user => (
         <div id={user.id} style={{ display: 'flex', alignItems: 'center' }}>
-          <span className="user__typing">{user.name} is typing</span>
+          <span className='user__typing'>{user.name} is typing</span>
         </div>
       ));
     }
@@ -259,7 +269,8 @@ class Messages extends Component {
       searchLoading,
       privateChannel,
       isChannelStarred,
-      typingUsers
+      typingUsers,
+      messagesLoading
     } = this.state;
     return (
       <React.Fragment>
@@ -273,10 +284,12 @@ class Messages extends Component {
           isChannelStarred={isChannelStarred}
         />
 
-        <Segment className="messages">
+        <Segment className='messages' style={{ padding: 0 }}>
           <Comment.Group
+            id='messages-group'
             className={progressBar ? 'messages__progress' : 'messages'}
           >
+            {this.displayMessagesSkeleton(messagesLoading)}
             {searchTerm
               ? this.displayMessages(searchResults)
               : this.displayMessages(messages)}

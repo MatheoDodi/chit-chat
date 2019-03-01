@@ -18,7 +18,12 @@ const App = ({
   <Grid
     columns='equal'
     className='app'
-    style={{ background: secondaryColor, height: '100%' }}
+    style={{
+      background: secondaryColor,
+      height: '100%',
+      margin: 0,
+      padding: '1.5em'
+    }}
   >
     <ColorPanel
       key={currentUser && currentUser.name}
@@ -33,7 +38,7 @@ const App = ({
     ) : (
       'Loading'
     )}
-    <Grid.Column style={{ marginLeft: 350 }} id='messages-container'>
+    <Grid.Column style={{ marginLeft: 320 }} id='messages-container'>
       <Messages
         key={currentChannel && currentChannel.id}
         currentChannel={currentChannel}
@@ -41,7 +46,7 @@ const App = ({
         isPrivateChannel={isPrivateChannel}
       />
     </Grid.Column>
-    <Grid.Column width={4}>
+    <Grid.Column width={4} style={{}}>
       <MetaPanel
         currentChannel={currentChannel}
         key={currentChannel && currentChannel.name}

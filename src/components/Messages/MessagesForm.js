@@ -220,7 +220,6 @@ class MessageForm extends Component {
           // onKeyDown={this.handleKeyDown}
           onChange={this.handleChange}
           value={message}
-          ref={node => (this.messageInputRef = node)}
           style={{ marginBottom: '0.7em' }}
           ref={inputNode => (this.messageInput = inputNode)}
           label={
