@@ -284,7 +284,7 @@ class Messages extends Component {
           isChannelStarred={isChannelStarred}
         />
 
-        <Segment className='messages' style={{ padding: 0 }}>
+        <Segment id='messages__segment' style={{ padding: 0 }}>
           <Comment.Group
             id='messages-group'
             className={progressBar ? 'messages__progress' : 'messages'}
