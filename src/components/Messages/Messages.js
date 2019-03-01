@@ -231,16 +231,16 @@ class Messages extends Component {
   displayTypingUsers = users => {
     if (users.length > 1) {
       return users.map((user, index) => (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <snap className='user__typing'>
+        <div id={user.id} style={{ display: 'flex', alignItems: 'center' }}>
+          <span className="user__typing">
             {user.name} is typing{users.length - 1 === index ? '' : ','}
-          </snap>
+          </span>
         </div>
       ));
     } else {
       return users.map(user => (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <snap className='user__typing'>{user.name} is typing</snap>
+        <div id={user.id} style={{ display: 'flex', alignItems: 'center' }}>
+          <span className="user__typing">{user.name} is typing</span>
         </div>
       ));
     }
@@ -273,7 +273,7 @@ class Messages extends Component {
           isChannelStarred={isChannelStarred}
         />
 
-        <Segment className='messages'>
+        <Segment className="messages">
           <Comment.Group
             className={progressBar ? 'messages__progress' : 'messages'}
           >

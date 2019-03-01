@@ -68,7 +68,7 @@ class MessageForm extends Component {
 
   sendMessage = () => {
     const { getMessagesRef } = this.props;
-    const { message, channel, user } = this.state;
+    const { message, channel } = this.state;
 
     if (message) {
       this.setState({ loading: true });
@@ -171,6 +171,28 @@ class MessageForm extends Component {
     this.setState({ emojiPicker: !this.state.emojiPicker });
   };
 
+  handleAddEmoji = emoji => {
+    const oldMessage = this.state.message;
+    const newMessage = this.colonToUnicode(`${oldMessage} ${emoji.colons} `);
+    this.setState({ message: newMessage, emojiPicker: false });
+    this.messageInput.focus();
+  };
+
+  colonToUnicode = message => {
+    return message.replace(/:[A-Za-z0-9_+]+:/g, x => {
+      x = x.replace(/:/g, '');
+      let emoji = emojiIndex.emojis[x];
+      if (typeof emoji !== 'undefined') {
+        let unicode = emoji.native;
+        if (typeof unicode !== 'undefined') {
+          return unicode;
+        }
+      }
+      x = ':' + x + ':';
+      return x;
+    });
+  };
+
   render() {
     const {
       errors,
@@ -189,6 +211,7 @@ class MessageForm extends Component {
             className='emojiPicker'
             title='Pick your emoji'
             emoji='point_up'
+            onSelect={this.handleAddEmoji}
           />
         )}
         <Input
@@ -199,11 +222,12 @@ class MessageForm extends Component {
           value={message}
           ref={node => (this.messageInputRef = node)}
           style={{ marginBottom: '0.7em' }}
+          ref={inputNode => (this.messageInput = inputNode)}
           label={
             <Button
-              icon={'add'}
+              icon={emojiPicker ? 'close' : 'add'}
+              content={emojiPicker ? 'Close' : null}
               onClick={this.handleTogglePicker}
-              content={null}
             />
           }
           labelPosition='left'
