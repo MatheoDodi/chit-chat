@@ -4,6 +4,8 @@ import uuidv4 from 'uuid/v4';
 import { Segment, Button, Input } from 'semantic-ui-react';
 import FileModal from './FileModal';
 import ProgressBar from './../UI/ProgressBar';
+import { Picker, emojiIndex } from 'emoji-mart';
+import 'emoji-mart/css/emoji-mart.css';
 
 class MessageForm extends Component {
   state = {
@@ -17,7 +19,8 @@ class MessageForm extends Component {
     user: this.props.currentUser,
     loading: false,
     errors: [],
-    modal: false
+    modal: false,
+    emojiPicker: false
   };
 
   openModal = () => this.setState({ modal: true });
@@ -74,7 +77,10 @@ class MessageForm extends Component {
         .push()
         .set(this.createMessage())
         .then(() => {
-          this.setState({ loading: false, message: '', errors: [] });
+          this.setState(
+            { loading: false, message: '', errors: [] },
+            this.handleKeyDown
+          );
         })
         .catch(err => {
           console.error(err);
@@ -161,6 +167,10 @@ class MessageForm extends Component {
       });
   };
 
+  handleTogglePicker = () => {
+    this.setState({ emojiPicker: !this.state.emojiPicker });
+  };
+
   render() {
     const {
       errors,
@@ -168,10 +178,19 @@ class MessageForm extends Component {
       loading,
       modal,
       uploadState,
-      percentUploaded
+      percentUploaded,
+      emojiPicker
     } = this.state;
     return (
       <Segment className='message__form'>
+        {emojiPicker && (
+          <Picker
+            set='apple'
+            className='emojiPicker'
+            title='Pick your emoji'
+            emoji='point_up'
+          />
+        )}
         <Input
           fluid
           name='message'
@@ -180,7 +199,13 @@ class MessageForm extends Component {
           value={message}
           ref={node => (this.messageInputRef = node)}
           style={{ marginBottom: '0.7em' }}
-          label={<Button icon={'add'} content={null} />}
+          label={
+            <Button
+              icon={'add'}
+              onClick={this.handleTogglePicker}
+              content={null}
+            />
+          }
           labelPosition='left'
           className={
             errors.some(error => error.message.includes('message'))
