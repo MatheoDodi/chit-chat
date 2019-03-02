@@ -88,7 +88,7 @@ Contributions are what make the open source community such an amazing place to b
 
 Matthew Dodi - [in/MatthewDodi](https://linkedin.com/in/MatthewDodi) - matthew.dodi@gmail.com
 
-Project Link: [https://github.com/MatthewDodi/chit-chat.git](https://github.com/MatthewDodi/chit-chat.git)
+Project Link: [https://chit-chat-ee570.firebaseapp.com/](https://chit-chat-ee570.firebaseapp.com/)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
