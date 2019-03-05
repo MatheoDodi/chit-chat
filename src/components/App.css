@@ -97,8 +97,9 @@ body {
   transform: rotate(225deg);
 }
 
-.emojiPicker {
+.emoji-mart {
   position: absolute;
+  bottom: 100px;
 }
 
 .user__typing {
