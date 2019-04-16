@@ -10,11 +10,15 @@ class SidePanel extends Component {
     const { currentUser, primaryColor } = this.props;
     return (
       <Menu
-        size='large'
+        size="large"
         inverted
-        fixed='left'
+        fixed="left"
         vertical
-        style={{ background: primaryColor, fontSize: '1.2rem' }}
+        style={{
+          background: primaryColor,
+          fontSize: '1.2rem',
+          overflowY: 'scroll'
+        }}
       >
         <UserPanel currentUser={currentUser} />
         <Starred currentUser={currentUser} />
